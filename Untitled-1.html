@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login / Signup Form</title>
+
+  <!-- Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Poppins font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { poppins: ['Poppins', 'sans-serif'] } } }
+    };
+  </script>
+
+  <!-- RGB animation + responsive scaling -->
+  <style>
+    /* ---- RGB color cycle (gaming style) ---- */
+    @property --h { syntax: '<number>'; inherits: true; initial-value: 220; }
+    :root { animation: rgb-cycle 8s linear infinite; }
+    @keyframes rgb-cycle { to { --h: 580; } }
+
+    .rgb-bg {
+      background: linear-gradient(135deg,
+        hsl(var(--h) 90% 58%),
+        hsl(calc(var(--h) + 60) 90% 58%));
+    }
+    .rgb-glow {
+      box-shadow: 0 0 45px hsl(var(--h) 90% 58% / 0.45);
+      border: 1px solid hsl(var(--h) 90% 58% / 0.5);
+    }
+
+    /* ---- Responsive scaling ----
+       Phones: 1rem = 16px, vertical layout.
+       Tablet / laptop / desktop / TV: everything is sized in rem,
+       so changing the root font-size scales the whole card
+       (the layout stays identical, it just gets bigger). */
+    html { font-size: 16px; }
+    @media (min-width: 640px) {
+      html { font-size: clamp(16px, min(1.25vw, 2.4vh), 56px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :root { animation: none; }
+    }
+  </style>
+
+  <!-- Shared component styles -->
+  <style type="text/tailwindcss">
+    @layer components {
+      .field {
+        @apply w-full py-3 pl-5 pr-12 bg-zinc-900 rounded-lg outline-none text-base font-medium text-white placeholder-zinc-500;
+      }
+      .field:focus { box-shadow: 0 0 0 2px hsl(var(--h) 90% 58%); }
+
+      .field-icon {
+        @apply absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400;
+      }
+      .btn-main {
+        @apply w-full h-12 rounded-lg shadow-md text-white font-semibold text-base hover:brightness-110 transition-[filter];
+      }
+      .social {
+        @apply inline-flex items-center justify-center w-11 h-11 border-2 border-zinc-700 rounded-lg text-white text-xl hover:bg-zinc-800 transition-colors;
+      }
+      .btn-ghost {
+        @apply w-40 h-11 border-2 border-white rounded-lg text-white font-semibold hover:bg-white/10 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white;
+      }
+    }
+  </style>
+</head>
+
+<body class="font-poppins min-h-[100dvh] flex items-center justify-center bg-black p-4 overflow-x-hidden">
+
+  <!-- MAIN CONTAINER (class "active" is toggled by JS) -->
+  <div id="container"
+       class="group relative overflow-hidden bg-[#0b0b10] rgb-glow rounded-[1.875rem]
+              w-full max-w-[26rem] h-[max(42rem,calc(100dvh_-_2rem))] max-h-[60rem]
+              sm:max-w-none sm:w-[min(94vw,53.125rem)] sm:h-[34.375rem] sm:max-h-none">
+
+    <!-- ================= LOGIN FORM ================= -->
+    <div class="absolute z-[1] bottom-0 left-0 w-full h-[70%] p-6 flex items-center text-center text-white
+                transition-all duration-[600ms] ease-in-out delay-[1200ms]
+                group-[.active]:bottom-[30%] group-[.active]:opacity-0 group-[.active]:invisible
+                sm:top-0 sm:left-auto sm:right-0 sm:w-1/2 sm:h-full sm:p-10
+                sm:group-[.active]:right-1/2">
+      <form class="w-full" onsubmit="return false">
+        <h1 class="text-3xl sm:text-4xl font-semibold">Login</h1>
+
+        <div class="relative my-4 sm:my-8">
+          <input type="text" placeholder="Username" required class="field" />
+          <svg class="field-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4 0-8 2-8 5v3h16v-3c0-3-4-5-8-5Z"/></svg>
+        </div>
+        <div class="relative my-4 sm:my-8">
+          <input type="password" placeholder="Password" required class="field" />
+          <svg class="field-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M17 9V7a5 5 0 0 0-10 0v2H5v13h14V9h-2Zm-8-2a3 3 0 0 1 6 0v2H9V7Z"/></svg>
+        </div>
+
+        <div class="-mt-2 mb-4">
+          <a href="#" class="text-sm text-zinc-300 hover:underline">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="btn-main rgb-bg">Login</button>
+
+        <p class="text-sm my-3 sm:my-4 text-zinc-300">or login with social platforms</p>
+        <div class="flex justify-center gap-2">
+          <a href="#" class="social">G</a>
+          <a href="#" class="social">f</a>
+          <a href="#" class="social">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>
+          </a>
+          <a href="#" class="social font-semibold">in</a>
+        </div>
+      </form>
+    </div>
+
+    <!-- ================= REGISTRATION FORM ================= -->
+    <div class="absolute z-[1] bottom-0 left-0 w-full h-[70%] p-6 flex items-center text-center text-white
+                invisible opacity-0
+                transition-all duration-[600ms] ease-in-out delay-[1200ms]
+                group-[.active]:bottom-[30%] group-[.active]:opacity-100 group-[.active]:visible
+                sm:top-0 sm:left-auto sm:right-0 sm:w-1/2 sm:h-full sm:p-10
+                sm:group-[.active]:right-1/2">
+      <form class="w-full" onsubmit="return false">
+        <h1 class="text-3xl sm:text-4xl font-semibold">Registration</h1>
+
+        <div class="relative my-4 sm:my-8">
+          <input type="text" placeholder="Username" required class="field" />
+          <svg class="field-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4 0-8 2-8 5v3h16v-3c0-3-4-5-8-5Z"/></svg>
+        </div>
+
+        <div class="relative my-4 sm:my-8">
+          <input type="email" placeholder="Email" required class="field" />
+          <svg class="field-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm9 7L4 7v1.5l8 5 8-5V7l-8 5Z"/></svg>
+        </div>
+
+        <div class="relative my-4 sm:my-8">
+          <input type="password" placeholder="Password" required class="field" />
+          <svg class="field-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M17 9V7a5 5 0 0 0-10 0v2H5v13h14V9h-2Zm-8-2a3 3 0 0 1 6 0v2H9V7Z"/></svg>
+        </div>
+
+        <button type="submit" class="btn-main rgb-bg">Register</button>
+
+        <p class="text-sm my-3 sm:my-4 text-zinc-300">or register with social platforms</p>
+        <div class="flex justify-center gap-2">
+          <a href="#" class="social">G</a>
+          <a href="#" class="social">f</a>
+          <a href="#" class="social">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>
+          </a>
+          <a href="#" class="social font-semibold">in</a>
+        </div>
+      </form>
+    </div>
+    <!-- ================= RGB SLIDING PANEL ================= -->
+    <div class="absolute z-[2] rgb-bg
+                left-0 -top-[270%] w-full h-[300%] rounded-[4.5rem]
+                transition-all duration-[1800ms] ease-in-out
+                group-[.active]:top-[70%]
+                sm:top-0 sm:-left-[250%] sm:w-[300%] sm:h-full sm:rounded-[9.375rem]
+                sm:group-[.active]:top-0 sm:group-[.active]:left-1/2"></div>
+
+    <!-- ================= PANEL 1: Hello, Welcome! ================= -->
+    <div class="absolute z-[3] left-0 top-0 w-full h-[30%] px-6 flex flex-col items-center justify-center text-white text-center
+                transition-all duration-[600ms] ease-in-out delay-[1200ms]
+                group-[.active]:-top-[30%] group-[.active]:delay-[600ms]
+                sm:w-1/2 sm:h-full
+                sm:group-[.active]:top-0 sm:group-[.active]:-left-1/2">
+      <h1 class="text-2xl sm:text-4xl font-semibold">Hello, Welcome!</h1>
+      <p class="text-sm mt-2 mb-3 sm:mt-3 sm:mb-5">Don't have an account?</p>
+      <button id="registerBtn" class="btn-ghost">Register</button>
+    </div>
+
+    <!-- ================= PANEL 2: Welcome Back! ================= -->
+    <div class="absolute z-[3] right-0 -bottom-[30%] w-full h-[30%] px-6 flex flex-col items-center justify-center text-white text-center
+                transition-all duration-[600ms] ease-in-out delay-[600ms]
+                group-[.active]:bottom-0 group-[.active]:delay-[1200ms]
+                sm:bottom-0 sm:-right-1/2 sm:w-1/2 sm:h-full
+                sm:group-[.active]:right-0">
+      <h1 class="text-2xl sm:text-4xl font-semibold">Welcome Back!</h1>
+      <p class="text-sm mt-2 mb-3 sm:mt-3 sm:mb-5">Already have an account?</p>
+      <button id="loginBtn" class="btn-ghost">Login</button>
+    </div>
+
+  </div>
+
+  <!-- Toggle between Login and Register -->
+  <script>
+    const container = document.getElementById('container');
+    document.getElementById('registerBtn').addEventListener('click', () => container.classList.add('active'));
+    document.getElementById('loginBtn').addEventListener('click', () => container.classList.remove('active'));
+  </script>
+</body>
+</html>
